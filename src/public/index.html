@@ -12,29 +12,31 @@
     <h2 class="text-center mt-3">Exercise Tracker</h2>
 
     <main class="container-fluid row justify-content-center gap-3">
-        <div class="col-4  d-flex justify-content-center align-items-center">
+        <div class="col-md-4 col-lg-4 d-flex justify-content-center align-items-center">
             <form action="/api/users" method="post" class="row g-2">
                 <h4>Create a new user</h4>
                 <small>POST /api/users</small>
-                <div class="col-auto">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">@</span>
-                        <input required name="username" type="text" class="form-control" placeholder="Username">
+                <div>
+                    <div class="col-auto">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">@</span>
+                            <input required name="username" type="text" class="form-control" placeholder="Username">
+                        </div>
                     </div>
-                </div>
-                <div class="col-auto w-100">
-                    <button type="submit" class="w-100 btn btn-outline-primary">Send</button>
-                </div>  
+                    <div class="col-auto">
+                        <button type="submit" class="w-100 btn btn-outline-primary">Send</button>
+                    </div>
+                </div> 
               </form>
         </div>
-        <div class="col-6 d-flex justify-content-center align-items-center">
-            <form action="/api/users/:_id/exercises" method="post" class="row g-2">
+        <div class="col-md-4 col-lg-6 d-flex justify-content-center align-items-center">
+            <form id="form" method="post" class="row g-2" >
                 <h4>Add exercises</h4>
                 <small>POST /api/users/:_id/exercises</small>
                 <div class="mb-3 row">
-                    <label for="id" class="col-sm-2 col-form-label">Id</label>
+                    <label for=":_id" class="col-sm-2 col-form-label">Id</label>
                     <div class="col-sm-10">
-                      <input required type="text" class="form-control" name="id">
+                      <input required type="text" class="form-control"id="id" type="text" name=":_id">
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -56,7 +58,7 @@
                     </div>
                 </div>
                 <div class="col-auto w-100">
-                    <button type="submit" class="w-100 btn btn-outline-primary">Send</button>
+                    <input id="submit-btn" type="submit" class="w-100 btn btn-outline-primary" value="Send"/>
                 </div>  
             </form>
         </div>
@@ -67,5 +69,20 @@
         </div>
         <p class="text-center"><span >By <a target="_blank" href="https://github.com/Adriangln11/url-shortener-microservice">Adriangln11</a></span></p>
     </main>
+    
+
+    <script>
+        //Isnt workink
+        const form = document.getElementById("form");
+        const submitBtn = document.getElementById("submit-btn")
+
+        submitBtn.addEventListener("click", (e) => {
+            console.log('click submit')
+        const userId = document.getElementById("id").value;
+        form.action = `/api/users/${userId}/exercises`;
+
+        form.submit();
+        });
+    </script>
 </body>
 </html>

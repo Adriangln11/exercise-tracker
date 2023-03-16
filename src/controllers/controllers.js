@@ -23,29 +23,31 @@ const getUsers = async (req, res, next) => {
 }
 const addExercise = async (req, res, next) => {
     let { description, duration, date, id } = req.body
+    const {_id} = req.params
     duration = Number(duration)
     if(date == '') date = new Date().toDateString()
-    const userDoc = await UserModel.findOne({_id:id})
+    const userDoc = await UserModel.findOne({_id:_id})
     if(!userDoc) return res.json({error: 'Invalid Id'})
     const newExercise = {
         _id: userDoc._id,
         username: userDoc.username,
         description,
         duration,
-        date 
+        date: new Date(date).toDateString() 
     }
     const logDoc = await LogModel.findOneAndUpdate({username:userDoc.username}, {$inc: {count: 1}})
+    date = new Date(date).toDateString()
     logDoc.log.push({description, duration, date})
     logDoc.save()
-    
+    console.log(newExercise)
     return res.json(newExercise)
 }
 const getLogs = async (req, res, next) => {
     const {_id} = req.params
     let {from, to, limit} = req.query
     const doc = await LogModel.findById(_id)
-    let doc2 = Object.assign({}, doc._doc)
     if (from && to) {
+        let doc2 = Object.assign({}, doc._doc)
         let startDate = new Date(from)
         let endDate = new Date(to)
         let logFiltered = doc2.log.filter(log => {
@@ -67,7 +69,7 @@ const getLogs = async (req, res, next) => {
         doc.log = doc.log.slice(0, limit)
         doc.count = doc.log.length
     }
-    
+    console.log(doc)
     return res.json(doc)
 }
 
